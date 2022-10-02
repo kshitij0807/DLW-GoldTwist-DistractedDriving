@@ -1,2 +1,2 @@
-# DLW-GoldTwist-Drowsiness-detection
+# DLW-GoldTwist-Distractedness driving detection
 Dlw hackathon repo
