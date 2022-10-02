@@ -3,16 +3,25 @@ import os
 from keras.models import load_model
 import numpy as np
 from pygame import mixer
+import serial
 import time
 
 
+# serialport = "com4"
+# ser = serial.Serial('COM4', 9800 ,timeout = 1 )
+# ser.write(b'H')
+# for i in range(5):
+#     with serial.Serial('COM4', 9800, timeout=1) as ser:
+#         time.sleep(0.5)
+#         ser.write(b'H')   # send the pyte string 'H'
+#         time.sleep(0.5)   # wait 0.5 seconds
+#         ser.write(b'L')
 mixer.init()
 sound = mixer.Sound('alarm.wav')
 
 face = cv2.CascadeClassifier('haar cascade files\haarcascade_frontalface_alt.xml')
 leye = cv2.CascadeClassifier('haar cascade files\haarcascade_lefteye_2splits.xml')
 reye = cv2.CascadeClassifier('haar cascade files\haarcascade_righteye_2splits.xml')
-
 
 
 lbl=['Close','Open']
@@ -106,10 +115,17 @@ while(True):
     if(score<0):
         score=0   
     cv2.putText(frame,'Score:'+str(score),(100,height-20), font, 1,(255,255,255),1,cv2.LINE_AA)
-    if(score>15):
+    if(score>3):
         #person is feeling sleepy so we beep the alarm
         cv2.imwrite(os.path.join(path,'image.jpg'),frame)
         try:
+            print('testttttttt')
+            for i in range(5):
+                with serial.Serial('COM4', 9800, timeout=1) as ser:
+                    time.sleep(0.5)
+                    ser.write(b'H')   # send the pyte string 'H'
+                    time.sleep(0.5)   # wait 0.5 seconds
+                    ser.write(b'L')
             sound.play()
             
         except:  # isplaying = False
